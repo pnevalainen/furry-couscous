@@ -12,6 +12,14 @@ const handle = app.getRequestHandler();
 
 console.log(data);
 
+function saveDataFile() {
+    fs.writeFile(moviesFileLocation, JSON.stringify(data), function(err) {
+        if(err) {
+            throw new Error('File save error!')
+        }
+    });     
+}
+
 app.prepare()
     .then(() => {
         const server = express();
@@ -30,14 +38,18 @@ app.prepare()
         // add new movie
         server.post(apiUrls.MOVIES, (req, res) => {
             const { movie: newMovie } = req.body;
-        
-            data.push(newMovie);
 
-            fs.writeFile(moviesFileLocation, data, function(err) {
-                if(err) {
-                    throw new Error('File save error!')
-                }
-            }); 
+            console.log('----------');
+            console.log(newMovie);
+            console.log('----------');
+
+            if(newMovie) {
+                data.push(newMovie);
+                saveDataFile();
+            } else {
+                throw new Error("Payload format invalid or null");
+            }
+
             res.status(200).json(newMovie);
         });
         // remove movie
@@ -45,12 +57,7 @@ app.prepare()
             const name = req.params.name;
 
             data.splice(data.findIndex(movie => movie.name === name), 1);
-
-            fs.writeFile(moviesFileLocation, data, function(err) {
-                if(err) {
-                    throw new Error('File save error!')
-                }
-            }); 
+            saveDataFile();
             res.status(200).send('OK');
         });
 
