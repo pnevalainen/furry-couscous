@@ -1,7 +1,6 @@
 const express = require('express');
 const next = require('next');
 const fs = require('fs');
-//const res = require('express/lib/response');
 const moviesFileLocation = './data/movies.json';
 const data = JSON.parse(fs.readFileSync(moviesFileLocation));
 const apiUrls = require('./config');
@@ -9,8 +8,6 @@ const port = 3000;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
-
-console.log(data);
 
 function saveDataFile() {
     fs.writeFile(moviesFileLocation, JSON.stringify(data), function(err) {
@@ -24,17 +21,21 @@ app.prepare()
     .then(() => {
         const server = express();
         server.use(express.json());
-        server.get('/page2', (req, res) => {
-            return app.render(req, res, '/page2');
+
+        server.get('/new-movie', (req, res) => {
+            return app.render(req, res, '/NewMovie');
         })
+
         // get movies, filter by parameter filterByMovieName
         server.get(apiUrls.MOVIES, (req, res) => {
+            console.log(req.query);
             const returnData =
                 req.query.filterByMovieName
                 ? data.filter(movie => movie.name.toLowerCase().includes(req.query.filterByMovieName.toLowerCase()))
                 : data;
             res.status(200).json(returnData);
         });
+
         // add new movie
         server.post(apiUrls.MOVIES, (req, res) => {
             const { movie: newMovie } = req.body;
@@ -43,7 +44,11 @@ app.prepare()
             console.log(newMovie);
             console.log('----------');
 
-            if(newMovie) {
+            // possible validation
+            const isValidatedOk = true;
+            //
+
+            if (newMovie && isValidatedOk) {
                 data.push(newMovie);
                 saveDataFile();
             } else {
@@ -52,13 +57,21 @@ app.prepare()
 
             res.status(200).json(newMovie);
         });
+
         // remove movie
         server.delete(`${apiUrls.MOVIES}/:name`, (req, res) => {
             const name = req.params.name;
 
-            data.splice(data.findIndex(movie => movie.name === name), 1);
-            saveDataFile();
-            res.status(200).send('OK');
+            const removeMovieIndex = data.findIndex(movie => movie.name === name);
+
+            if (removeMovieIndex > -1) {
+                data.splice(removeMovieIndex, 1);
+                saveDataFile();
+                res.status(200).send('OK');
+            } else {
+                throw new Error("No movie found with that name");
+            }
+            
         });
 
         server.get('*', (req, res) => {
@@ -67,7 +80,7 @@ app.prepare()
         
         server.listen(port, (error) => {
             if (error) throw error;
-            console.log(`Valmiina http://localhost:${port}`);
+            console.log(`Valmiina tarjoilemaan leffoja http://localhost:${port}`);
         });
     })
 

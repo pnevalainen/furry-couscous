@@ -1,4 +1,5 @@
 # furry-couscous
+- Node.js version 16
 - npm install
 - npm run build
 - npm run startssr

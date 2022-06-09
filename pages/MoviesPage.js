@@ -38,7 +38,8 @@ const MoviesPage = ({ getData = () => {} })=> {
 
     const [inputValue, setInputValue] = useState('');
     const [filterBy, setFilterBy] = useState('');
-
+    const [refetchToggle, setRefetchToggle] = useState(false);
+    const moviesApiUrl = `${apiUrl}?refetch=${refetchToggle}`;
     return <>
         <FilterForm>
             <Input
@@ -54,7 +55,7 @@ const MoviesPage = ({ getData = () => {} })=> {
                     Filter
             </FilterDataButton>
         </FilterForm>
-        <MoviesListPage getData={getData(filterBy ? `${apiUrl}?filterByMovieName=${filterBy}` : apiUrl)} />
+        <MoviesListPage getData={getData(filterBy ? `${moviesApiUrl}&filterByMovieName=${filterBy}` : moviesApiUrl)} />
         </>
 };
 
