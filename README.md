@@ -1,4 +1,5 @@
 # furry-couscous
+- Simple file persistance
 - Node.js version 16
 - npm install
 - npm run build
