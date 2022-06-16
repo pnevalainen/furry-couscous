@@ -21,7 +21,7 @@ app.prepare()
     .then(() => {
         const server = express();
         server.use(express.json());
-
+        // todo: edit page to front
         server.get('/new-movie', (req, res) => {
             return app.render(req, res, '/NewMovie');
         })
@@ -31,7 +31,10 @@ app.prepare()
             console.log(req.query);
             const returnData =
                 req.query.filterByMovieName
-                ? data.filter(movie => movie.name.toLowerCase().includes(req.query.filterByMovieName.toLowerCase()))
+                ? data.filter(movie => 
+                    movie && movie.name.toLowerCase().includes(
+                        req.query.filterByMovieName.toLowerCase()
+                        ))
                 : data;
             res.status(200).json(returnData);
         });

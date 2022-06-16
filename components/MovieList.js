@@ -9,7 +9,7 @@ const MovieListContainer = styled.div`
 export const MovieList = ({ movies }) => {
     return <>
         {movies.map(movie => (
-            <MovieItem key={movie.name} movie={movie} />
+            movie && <MovieItem key={movie.name} movie={movie} />
         ))}
     </>
 };
