@@ -31,7 +31,10 @@ const FilterDataButton = styled.button`
     cursor: pointer;
     margin-left: 8px;
     width: 20%;
-    background-color: #22ee22;
+    background-color: lightgrey;
+    :hover {
+        background-color: grey; 
+    }
 `;
 
 const MoviesPage = ({ getData = () => {} })=> {

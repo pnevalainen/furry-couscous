@@ -33,7 +33,7 @@ export const MovieItem = ({ movie }) => {
     return (
         <MovieItemContainer>
             <h3>{movie.name}</h3>
-            <p>Year: {movie.year} | Age limit: {movie.ageLimit}</p>
+            <p><b>Year: </b>{movie.year} | <b>Age limit: </b>{movie.ageLimit}</p>
             {renderGenres(movie.genres)}
             <p>{movie.synopsis}</p>
             <p><b>Director:&nbsp;</b>{movie.director.firstName + " " + movie.director.lastName}</p>

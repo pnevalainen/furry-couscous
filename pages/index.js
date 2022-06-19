@@ -8,7 +8,7 @@ const getData = url => async () => {
 }
 
 const Index = ()=> {
-    return <><MoviesPage getData={getData}/></>
+    return <MoviesPage getData={getData}/>
 };
 
 export default Index;
