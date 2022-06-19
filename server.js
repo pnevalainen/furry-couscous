@@ -21,14 +21,15 @@ app.prepare()
     .then(() => {
         const server = express();
         server.use(express.json());
-        // todo: edit page to front
-        server.get('/new-movie', (req, res) => {
-            return app.render(req, res, '/NewMovie');
-        })
+        // todo: edit, add pages to front
+        server.get('/add-movie', (req, res) => {
+            console.log('todo: add page');
+            return app.render(req, res, '/AddMovie');
+        });
 
         // get movies, filter by parameter filterByMovieName
         server.get(apiUrls.MOVIES, (req, res) => {
-            console.log(req.query);
+
             const returnData =
                 req.query.filterByMovieName
                 ? data.filter(movie => 
